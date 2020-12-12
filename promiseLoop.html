@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/brain/0.6.3/brain.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/1.33.1/plotly.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	</head>
+
+	<body>
+	
+		<script>
+		
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+}
+
+
+class asyncArray {
+    constructor(array) {
+	     if(Array.isArray(array))
+		 {
+			this.array = array
+		 }
+		 
+		 if(typeof array == "string")
+		 {
+			this.min = array.split("..")[0];
+			this.max = array.split("..")[1];
+		 }
+		 
+         this.promisChain = Promise.resolve(0);
+		 
+    }
+	
+	launchChain(res,item,f) {
+		return new Promise(function(resolve, reject) {
+		setTimeout(function() {resolve(f(res,item));}, 900);
+		});
+	}
+	
+	
+	run(f)
+	{
+		var self = this;
+		for (let i = 0; i < this.array.length; i++) {
+			this.promisChain = this.promisChain.then(function(res) {return self.launchChain(res,self.array[i],f);});
+		}
+		
+		return this.promisChain ;
+	}
+	
+
+}
+
+
+var delays = [500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1750, 1800, 1850, 1900];
+
+var aa = new asyncArray(delays)
+
+aa.run((res,item)=>{
+
+	var color = "";
+	var uuids = [];
+	
+	for(var i = 0; i< item; i++)
+	{
+		uuids.push(uuidv4());
+	}
+	
+	var uu = uuids[Math.floor(item/2)];
+	
+	
+
+	if(res == "AFF5F7")
+	{		
+		$('#myTable').append('<tr bgcolor="#AFF5F7"><td>'+Math.floor(item/2)+'. UUID = '+uu+'</td></tr>');
+		color="E2F7AF";
+	}
+	
+	else if(res == "E2F7AF")
+	{
+		$('#myTable').append('<tr bgcolor="#E2F7AF"><td>'+Math.floor(item/2)+'. UUID = '+uu+'</td></tr>');
+		color="AFF5F7";
+	}
+	
+	else
+	{
+		$('#myTable').append('<tr bgcolor="#AFF5F7"><td>'+Math.floor(item/2)+'. UUID = '+uu+'</td></tr>');
+		color="E2F7AF";
+	}
+
+	return color
+ 
+ }).then((res)=>{
+ 
+	$('#myTable').append('<tr ><td>bitti</td></tr>');
+	console.log("selçuk" +res)
+ 
+ });
+
+
+
+
+
+		</script>
+		
+
+			<table id="myTable" border=1>
+		<tr>
+		<td>asdsadasd</td>
+		</tr>
+				<tr>
+		<td>asdsadasd</td>
+		</tr>
+				<tr>
+		<td>asdsadasd</td>
+		</tr>
+				<tr>
+		<td>asdsadasd</td>
+		</tr>
+				<tr>
+		<td>asdsadasd</td>
+		</tr>
+		
+		</table>
+
+	</body>
+</html>
